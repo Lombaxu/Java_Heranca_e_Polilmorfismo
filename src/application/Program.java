@@ -2,37 +2,56 @@ package application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
-import entities.Account;
-import entities.BusinessAccount;
-import entities.SavingsAccount;
+import entities.Circle;
+import entities.Rectangle;
+import entities.Shape;
+import entities.enums.Color;
 
 public class Program {
 	
 	public static void main(String[] args) {
 		
-		List<Account> list = new ArrayList<>();
+		Locale.setDefault(Locale.US);
 		
-		list.add(new SavingsAccount(1001, "Alex", 500.00, 0.01));
-		list.add(new BusinessAccount(1002, "Maria", 1000.0, 400.0));
-		list.add(new SavingsAccount(1004, "Bob", 300.00, 0.01));
-		list.add(new BusinessAccount(1005, "Anna", 500.0, 500.0));
+		Scanner sc = new Scanner(System.in);
 		
-		double sum = 0;
+		List<Shape> list = new ArrayList<>();
 		
-		for (Account acc : list) {
-			sum += acc.getBalance();
+		System.out.print("Enter the number of shapes: ");
+		int n = sc.nextInt();
+		
+		for (int i = 1; i <= n; i++) {
+			System.out.println("Shape #" + i + " data:");
+			System.out.print("Rectangle or Circle (r/c)? ");
+			char ch = sc.next().charAt(0);
+			System.out.print("Color (BLACK/BLUE/RED): ");
+			Color color = Color.valueOf(sc.next());
+			if (ch == 'r') {
+				System.out.print("Width: ");
+				double width = sc.nextDouble();
+				System.out.print("Height: ");
+				double height = sc.nextDouble();
+				list.add(new Rectangle(color, width, height));
+			}
+			else {
+				System.out.print("Radius");
+				double radius = sc.nextDouble();
+				list.add(new Circle(color, radius));
+			}
 		}
 		
-		System.out.printf("Total balance: %.2f%n", sum);
+		System.out.println();
 		
-		for (Account acc : list) {
-			acc.deposit(10.0);
+		System.out.println("SHAPE AREAS:");
+		
+		for (Shape shape : list) {
+			System.out.println(String.format("%.2f", shape.area()));
 		}
 		
-		for (Account acc : list) {
-			System.out.printf("Update balance for account %d: %.2f%n", acc.getNumber(), acc.getBalance());
-		}
+		sc.close();
 		
 	}
 
